@@ -12,6 +12,7 @@ client = pymongo.MongoClient(
 db = client["stnt2"]
 # groups_data collection
 groups_data = db["groups_data"]
+projects_data = db["projects_data"]
 
 
 class Student(BaseModel):
@@ -26,6 +27,10 @@ class Group(BaseModel):
     student2: Student
     student3: Student
 
+class Project(BaseModel):
+    group_id: int
+    name: str
+    desc: str
 
 # home route
 @app.get("/", tags=["home"])
@@ -90,3 +95,17 @@ def group_members(group_id: int):
         "student3": {"name": data["student3"]["name"], "id": data["student3"]["id"]}
     }
     return student_data
+
+# projects urls
+#  project regisration
+@app.post("/register_project/", tags=["project_details"])
+def register_group(project: Project):
+    try:
+        projects_data.insert_one({
+            "name": project.name,
+            "id": project.group_id,
+            "desc": project.desc
+        })
+        return "project registration successful!"
+    except:
+        return "Error has occured!"
