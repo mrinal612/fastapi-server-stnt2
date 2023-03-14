@@ -82,3 +82,14 @@ def group_details(group_id: int):
     except:
         return f"Group with id: {group_id} wasn't registered!"
 
+# all groups data fetching
+@app.get("/group_members/{group_id}")
+def group_members(group_id: int):
+    data = groups_data.find_one({"id": group_id}, {'_id': 0})
+    print(data)
+    student_data = {
+        "student1": {"name": data["student1"]["name"], "id": data["student1"]["id"]},
+        "student2": {"name": data["student2"]["name"], "id": data["student2"]["id"]},
+        "student3": {"name": data["student3"]["name"], "id": data["student3"]["id"]}
+    }
+    return student_data
