@@ -33,13 +33,13 @@ class RegisteredProject(BaseModel):
 
 
 # home route
-@app.get("/")
+@app.get("/",tags=["home"])
 def read_root():
     return {"project": "FastAPI server", "group-name": "Rx100", "group-id": 1}
 
 
 # group registration
-@app.post("/register_group/")
+@app.post("/register_group/", tags=["group_details"])
 async def register_group(group: Group):
     try:
         groups_data.insert_one({
@@ -64,14 +64,14 @@ async def register_group(group: Group):
 
 
 # all groups data fetching
-@app.get("/group_details")
+@app.get("/group_details", tags=["group_details"])
 def group_details():
     all_groups = list(groups_data.find({}, {'_id': 0}))
     return all_groups
 
 
 # group data fetching with id
-@app.get("/group_details/{group_id}")
+@app.get("/group_details/{group_id}", tags=["group_details"])
 def group_details(group_id: int):
     try:
         data = groups_data.find_one({"id": group_id}, {'_id': 0})
@@ -83,7 +83,9 @@ def group_details(group_id: int):
         return f"Group with id: {group_id} wasn't registered!"
 
 # group members data fetching
-@app.get("/group_members/{group_id}")
+
+
+@app.get("/group_members/{group_id}", tags=["group_details"])
 def group_members(group_id: int):
     data = groups_data.find_one({"id": group_id}, {'_id': 0})
     student_data = {
