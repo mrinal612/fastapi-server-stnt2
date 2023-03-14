@@ -27,17 +27,12 @@ class Group(BaseModel):
     student3: Student
 
 
-class RegisteredProject(BaseModel):
-    project_name: str
-    group_id: int
-    project_description:str
-
-
 # home route
-@app.get("/",tags=["home"])
+@app.get("/", tags=["home"])
 def read_root():
     return {"project": "FastAPI server", "group-name": "Rx100", "group-id": 14}
 
+# group details urls
 
 # group registration
 @app.post("/register_group/", tags=["group_details"])
@@ -95,9 +90,3 @@ def group_members(group_id: int):
         "student3": {"name": data["student3"]["name"], "id": data["student3"]["id"]}
     }
     return student_data
-
-# projects details urls
-@app.post("/register_group/", tags=["group_details"])
-async def register_group(group: Group):
-
-    return 
